@@ -1,0 +1,1 @@
+uic -o ui_formnewprojectdialog.h newprojectdialog.ui

@@ -1,0 +1,1 @@
+moc -o moc_closeprojectdialog.cpp closeprojectdialog.h

@@ -1,0 +1,1 @@
+uic -o ui_formcloseprojectdialog.h closeprojectdialog.ui

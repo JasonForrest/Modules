@@ -1,0 +1,1 @@
+moc -o moc_mainwindow.cpp mainwindow.h
