@@ -15,32 +15,23 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="centralLayout">
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>3</number>
+    </property>
+    <property name="rightMargin">
+     <number>3</number>
+    </property>
+    <property name="bottomMargin">
+     <number>3</number>
+    </property>
+    <property name="spacing">
+     <number>3</number>
+    </property>
     <item row="0" column="0">
-     <widget class="QWidget" name="mainWidget" native="true">
-      <layout class="QGridLayout" name="mainWidgetLayout">
-       <item row="0" column="0">
-        <layout class="QGridLayout" name="mainWidgetWorkPlaceLayout">
-         <item row="0" column="0">
-          <widget class="QScrollArea" name="workPlaceScrollArea">
-           <property name="widgetResizable">
-            <bool>false</bool>
-           </property>
-           <widget class="QWidget" name="workPlaceScrollAreaWidget">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>256</width>
-              <height>256</height>
-             </rect>
-            </property>
-           </widget>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
+     <widget class="QTabWidget" name="tabProjectPages"/>
     </item>
    </layout>
   </widget>
@@ -59,6 +50,7 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionClose"/>
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
@@ -105,6 +97,11 @@
    </property>
    <property name="text">
     <string>Open...</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
    </property>
   </action>
  </widget>

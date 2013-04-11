@@ -32,9 +32,6 @@ namespace Ui
 
 		OQSettings::SettingsManager *_settingsManager;
 		OQSettings::ErrorMessanger *_errorMessanger;
-
-	public:
-		QPlainTextEdit *_tempEdit;
     };
 }
 

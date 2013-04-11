@@ -19,16 +19,10 @@ namespace Ui
 		connect(_mainWindowForm->actionOpen, SIGNAL(triggered()), this, SLOT(openProjectDialog()));
 		connect(_mainWindowForm->actionSave, SIGNAL(triggered()), this, SLOT(saveProjectDialog()));
 		connect(_mainWindowForm->actionSaveAs, SIGNAL(triggered()), this, SLOT(saveAsProjectDialog()));
-
-		_tempEdit = new QPlainTextEdit(this);
-		_tempEdit->setGeometry(40, 60, 600, 600);
     }
 
     MainWindow::~MainWindow()
     {
-		delete _tempEdit;
-		_tempEdit = NULL;
-
         delete _mainWindowForm;
 		_mainWindowForm = NULL;
 		delete _newProjectDialog;
