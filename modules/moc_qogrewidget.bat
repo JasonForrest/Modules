@@ -1,0 +1,1 @@
+moc -o moc_qogrewidget.cpp qogrewidget.h
