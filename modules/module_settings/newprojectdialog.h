@@ -3,7 +3,7 @@
 
 #include "ui_formnewprojectdialog.h"
 #include "windowsettings.h"
-#include <QtWidgets\qfiledialog.h>
+#include <QtGui/qfiledialog.h>
 
 struct xml_string_writer: pugi::xml_writer
 {
@@ -30,11 +30,14 @@ namespace Ui
 
 		void showDialog();
 
-	public slots:
+	public Q_SLOTS:
 		void enableOkButton();
 		void setSettings();
 		void modeToggled(bool checked);
 		void openFolderDialog();
+
+	Q_SIGNALS:
+		void addProjectPage(std::string);
 	
 	private:
 		void resetFields();
@@ -42,7 +45,6 @@ namespace Ui
     private:
         FormNewProjectDialog *_newProjectDialogForm;
 		allSizes _sizes;
-		bool _enableOkButton;
     };
 }
 

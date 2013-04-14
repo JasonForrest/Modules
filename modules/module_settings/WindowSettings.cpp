@@ -1,4 +1,4 @@
-#include "WindowSettings.h"
+#include "windowsettings.h"
 
 template<> OQSettings::ErrorMessanger* Ogre::Singleton<OQSettings::ErrorMessanger>::msSingleton = 0;
 OQSettings::ErrorMessanger* OQSettings::ErrorMessanger::getSingletonPtr(void)
@@ -28,7 +28,7 @@ namespace OQSettings
 {
 	ErrorMessanger::ErrorMessanger(QWidget *parent)
 					: _lastError(NULL)
-					, _closeProjectDialog(NULL)
+					, _closeProjectDialog(new Ui::CloseProjectDialog(parent))
 					, _parent(parent)
 					, _messageResult(0)
 	{
@@ -45,10 +45,7 @@ namespace OQSettings
 
 	int ErrorMessanger::showExCloseProjectDialog()
 	{
-		delete _closeProjectDialog;
-		_closeProjectDialog = NULL;
-
-		_closeProjectDialog = new Ui::CloseProjectDialog(_parent);
+		_closeProjectDialog->setParent(_parent);
 
 		return _closeProjectDialog->showDialog(SettingsManager::getSingleton().getProjectsNames());
 	}
@@ -535,6 +532,37 @@ namespace OQSettings
 		return NULL;
 	}
 
+	bool SettingsManager::closeActiveProject()
+	{
+		int result = DR_NO;
+
+		if (_projectsMap.size() == 1)
+		{
+			return false;
+		}
+		else
+		{
+			result = ErrorMessanger::getSingleton().lastError(ET_CONFIRM, "Save the project before closing?", "SettingsManager::closeActiveProject()", _needShowMessage, DT_WARNING_YNC);
+
+			if (result == DR_YES)
+			{
+				saveProject(getActiveProject()->_projectName);
+				closeProject(getActiveProject()->_projectName);
+			}
+			else if (result == DR_NO)
+			{
+				closeProject(getActiveProject()->_projectName);
+			}
+		}
+
+		if (result == DR_CANCEL)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	void SettingsManager::closeProject(std::string const& projectName)
 	{
 		if (_currentNumberOfOpenProjects > _minNumberOfOpenProjets) 
@@ -598,7 +626,7 @@ namespace OQSettings
 			else
 			{
 				result = ErrorMessanger::getSingleton().showExCloseProjectDialog();
-				closableProjects = ErrorMessanger::getSingleton().getCloseProjectDialog()->getClosedProjects();
+				closableProjects = ErrorMessanger::getSingleton().getCloseProjectDialog()->getClosableProjects();
 
 				if (result == DR_YES && closableProjects.empty())
 				{

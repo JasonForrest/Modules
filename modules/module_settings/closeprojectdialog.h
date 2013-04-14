@@ -2,7 +2,7 @@
 #define CLOSE_PROJECT_DIALOG_H
 
 #include "ui_formcloseprojectdialog.h"
-#include <QtWidgets\qmessagebox.h>
+#include <QtGui/qmessagebox.h>
 
 namespace OQSettings
 {
@@ -28,18 +28,21 @@ namespace Ui
         int showDialog(std::vector<std::string> const& names);
 
 		//getters
-		inline std::vector<std::string> const& getClosedProjects() const
+		inline std::vector<std::string> const& getClosableProjects() const
 		{
 			return _closableProjects;
 		}
 
-	public slots:
+	public Q_SLOTS:
 		void removeSelectedProject();
         void checkAllProjects(bool checked);
 		void enableYesNoButtons();
         void yes();
         void no();
         void cancel();
+
+	Q_SIGNALS:
+		void removeProjectPages();
 
 	private:
 		void createList(std::vector<std::string> const& names);

@@ -5,8 +5,8 @@
 #include <string>
 #include <map>
 #include <OGRE\Ogre.h>
-#include <QtWidgets\QApplication>
-#include <QtWidgets\qmessagebox.h>
+#include <QtGui\QApplication>
+#include <QtGui\qmessagebox.h>
 #include "closeprojectdialog.h"
 
 namespace OQSettings
@@ -537,6 +537,7 @@ namespace OQSettings
 		ProjectFileInfo *newProject(std::string const& projectPath, std::string const& projectName, std::string const& projectType);
 		bool const closeProjects(bool const& showConfirmDialog = true);
 		void closeProject(std::string const& projectName);
+		bool closeActiveProject();
 		bool const openProject(std::string const& fileName);
 		bool const saveProject(std::string const& projectName = ProjectTypeInfo::_emptyName);
 		bool const saveAsProject(std::string const& fileName);

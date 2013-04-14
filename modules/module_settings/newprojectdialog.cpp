@@ -5,11 +5,10 @@ namespace Ui
     NewProjectDialog::NewProjectDialog(QWidget *parent)
         : QDialog(parent)
         , _newProjectDialogForm(new FormNewProjectDialog)
-		, _enableOkButton(false)
     {
         _newProjectDialogForm->setupUi(this);
 
-		_newProjectDialogForm->buttonOk->setEnabled(_enableOkButton);
+		_newProjectDialogForm->buttonOk->setEnabled(false);
 
 		_sizes["320x240"] = QPoint(320, 240);
 		_sizes["480x640"] = QPoint(480, 640);
@@ -140,6 +139,7 @@ namespace Ui
 		if (settingsManager->saveProject(projectSettings->getProjectName()))
 		{
 			settingsManager->setActiveProject(projectSettings->getProjectName());
+			Q_EMIT addProjectPage(projectSettings->getProjectName());
 			close();
 		}
 		else
@@ -153,13 +153,11 @@ namespace Ui
 		if (_newProjectDialogForm->editPathToProjectFolder->text().size()
 			&& _newProjectDialogForm->editProjectName->text().size())
 		{
-			_enableOkButton = true;
-			_newProjectDialogForm->buttonOk->setEnabled(_enableOkButton);
+			_newProjectDialogForm->buttonOk->setEnabled(true);
 		}
 		else
 		{
-			_enableOkButton = false;
-			_newProjectDialogForm->buttonOk->setEnabled(_enableOkButton);
+			_newProjectDialogForm->buttonOk->setEnabled(false);
 		}
 	}
 

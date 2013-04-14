@@ -3,8 +3,7 @@
 
 #include "ui_formmainwindow.h"
 #include "newprojectdialog.h"
-
-#include <QtWidgets\qplaintextedit.h>
+#include "qogrewidget.h"
 
 namespace Ui
 {
@@ -19,12 +18,20 @@ namespace Ui
 	private:
 		void closeEvent(QCloseEvent *cevent);
 
-	public slots:
+	public Q_SLOTS:
 		void newProjectDialog();
 		void openProjectDialog();
 		void saveProjectDialog();
 		void saveAsProjectDialog();
 		void quitEditor();
+		void addPageForAddedProject(std::string name);
+		void removePagesForRemovedProjects();
+		void removePageForRemovedActiveProject();
+
+	protected:
+		virtual void addPage(std::string const& name);
+		void removePage(std::string const& name);
+		QWidget *pageTemplate(std::string const& name);
 
     protected:
         FormMainWindow *_mainWindowForm;

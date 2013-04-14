@@ -1,5 +1,5 @@
 #include "closeprojectdialog.h"
-#include <QtWidgets\qtreewidgetitemiterator.h>
+#include <QtGui/qtreewidgetitemiterator.h>
 
 namespace Ui
 {
@@ -43,6 +43,7 @@ namespace Ui
 		_closeProjectDialogForm->buttonRemoveProject->setEnabled(true);
 		_closableProjects.clear();
 		_closeProjectDialogForm->checkboxCheckAll->setChecked(false);
+		_closeProjectDialogForm->treeProjects->clear();
 	}
 
 	void CloseProjectDialog::removeSelectedProject()
@@ -85,12 +86,14 @@ namespace Ui
     void CloseProjectDialog::yes()
     {
         _result = OQSettings::DR_YES;
+		Q_EMIT removeProjectPages();
         hide();
     }
 
     void CloseProjectDialog::no()
     {
         _result = OQSettings::DR_NO;
+		Q_EMIT removeProjectPages();
         hide();
     }
 
