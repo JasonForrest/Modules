@@ -43,40 +43,43 @@ namespace QtOgre
 		Ogre::Root* _ogreRoot;
 	};*/
 
-class OgreWidget : public QGLWidget
-{
-  //Q_OBJECT;
- 
- public:
-  OgreWidget( QWidget *parent=0 ):
-    QGLWidget( parent ),
-    mOgreWindow(NULL)
-    {
-      init( "plugins.cfg", "ogre.cfg", "ogre.log" );
-    }
- 
-  virtual ~OgreWidget()
-    {
-      mOgreRoot->shutdown();
-      delete mOgreRoot;
-      destroy();
-    }
- 
- protected:
-  virtual void initializeGL();
-  virtual void resizeGL( int, int );
-  virtual void paintGL();
- 
-  void init( std::string, std::string, std::string );
- 
-  virtual Ogre::RenderSystem* chooseRenderer( Ogre::RenderSystemList* );
- 
-  Ogre::Root *mOgreRoot;
-  Ogre::RenderWindow *mOgreWindow;
-  Ogre::Camera *mCamera;
-  Ogre::Viewport *mViewport;
-  Ogre::SceneManager *mSceneMgr;
-};
+	class OgreWidget : public QGLWidget
+	{
+	public:
+		OgreWidget(int const& width, int const& height, QWidget *parent=0)
+			: QGLWidget(parent)
+			, _mOgreWindow(NULL)
+		{
+			this->setGeometry(0, 0, width, height);
+			this->setMaximumSize(width, height);
+
+			init("plugins.cfg", "ogre.cfg", "ogre.log");
+		}
+
+		virtual ~OgreWidget()
+		{
+			_mOgreRoot->shutdown();
+			delete _mOgreRoot;
+			_mOgreRoot = NULL;
+			destroy();
+		}
+
+	protected:
+		virtual void initializeGL();
+		virtual void resizeGL(int, int);
+		virtual void paintGL();
+		virtual void updateGL();
+
+		void init(std::string const&, std::string const&, std::string const&);
+
+		virtual Ogre::RenderSystem* chooseRenderer(Ogre::RenderSystemList*);
+
+		Ogre::Root *_mOgreRoot;
+		Ogre::RenderWindow *_mOgreWindow;
+		Ogre::Camera *_mCamera;
+		Ogre::Viewport *_mViewport;
+		Ogre::SceneManager *_mSceneMgr;
+	};
 }
 
 #endif  //_QOGREWIDGET_H

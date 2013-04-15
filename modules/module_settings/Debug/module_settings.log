@@ -1,10 +1,10 @@
-﻿Build started 14.04.2013 20:49:27.
+﻿Build started 15.04.2013 23:08:55.
      1>Project "E:\GitRepositories\Modules\modules\module_settings\module_settings.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\module_settings.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         E:\Programming\MSVS 10\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt qogrewidget.cpp
-         qogrewidget.cpp
+         E:\Programming\MSVS 10\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt newprojectdialog.cpp
+         newprojectdialog.cpp
      1>e:\gamedev\ogre3d\ogresdk_vc10_v1-8-1\include\ogre\ogreheadersuffix.h(34): warning C4193: #pragma warning(pop) : no matching '#pragma warning(push)'
      1>e:\gamedev\ogre3d\ogresdk_vc10_v1-8-1\include\ogre\ogreheadersuffix.h(34): warning C4193: #pragma warning(pop) : no matching '#pragma warning(push)'
      1>e:\gamedev\ogre3d\ogresdk_vc10_v1-8-1\include\ogre\ogreheadersuffix.h(34): warning C4193: #pragma warning(pop) : no matching '#pragma warning(push)'
@@ -30,4 +30,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:06.54
+Time Elapsed 00:00:06.39

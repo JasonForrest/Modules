@@ -106,22 +106,7 @@ namespace Ui
 
 	void MainWindow::addPage(std::string const& name)
 	{
-		//_mainWindowForm->tabProjectPages->addTab(pageTemplate(name), name.c_str());
-
-    QWidget *window = new QWidget;
- 
-    //window->resize(800, 600);
-    //window->setWindowTitle("Simple example");
-
-	_mainWindowForm->tabProjectPages->addTab(window, "OLOLO");
- 
-    QtOgre::OgreWidget* ogreWidget = new QtOgre::OgreWidget;
- 
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(ogreWidget);
- 
-    window->setLayout(layout);
-    //window->show();
+		_mainWindowForm->tabProjectPages->addTab(pageTemplate(name), name.c_str());
 	}
 
 	QWidget* MainWindow::pageTemplate(std::string const& name)
@@ -164,6 +149,11 @@ namespace Ui
 
 		mainWidgetLayout->addLayout(mainWidgetWorkPlaceLayout, 0, 0, 1, 1);
 		newTabLayout->addWidget(mainWidget, 0, 0, 1, 1);
+
+		QtOgre::OgreWidget* ogreWidget = new QtOgre::OgreWidget(width, height);
+		QVBoxLayout *workPlaceScrollAreaWidgetLayout = new QVBoxLayout;
+		workPlaceScrollAreaWidgetLayout->addWidget(ogreWidget);
+		workPlaceScrollAreaWidget->setLayout(workPlaceScrollAreaWidgetLayout);
 
 		return newTab;
 	}

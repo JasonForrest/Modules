@@ -80,192 +80,195 @@ namespace QtOgre
 		_ogreRoot->renderOneFrame(); 
 	}*/
 
-void OgreWidget::init( std::string plugins_file,
-         std::string ogre_cfg_file,
-         std::string ogre_log )
-{
-  // create the main ogre object
-  mOgreRoot = new Ogre::Root( plugins_file, ogre_cfg_file, ogre_log );
- 
-// setup a renderer
-  Ogre::RenderSystemList::const_iterator renderers = mOgreRoot->getAvailableRenderers().begin();
-  while(renderers != mOgreRoot->getAvailableRenderers().end())
-  {
-      Ogre::String rName = (*renderers)->getName();
-        if (rName == "OpenGL Rendering Subsystem")
-            break;
-        renderers++;
-  }
- 
-  Ogre::RenderSystem *renderSystem = *renderers;
- 
-  mOgreRoot->setRenderSystem( renderSystem );
-  QString dimensions = QString( "%1x%2" )
-                    .arg(this->width())
-                    .arg(this->height());
- 
-  renderSystem->setConfigOption( "Video Mode", dimensions.toStdString() );
- 
-  // initialize without creating window
-  mOgreRoot->getRenderSystem()->setConfigOption( "Full Screen", "No" );
-  mOgreRoot->saveConfig();
-  mOgreRoot->initialise(false); // don't create a window
-}
- 
-/**
- * @brief setup the rendering context
- * @author Kito Berg-Taylor
- */
-void OgreWidget::initializeGL()
-{
-  //== Creating and Acquiring Ogre Window ==//
- 
-  // Get the parameters of the window QT created
-  Ogre::String winHandle;
-#ifdef WIN32
-  // Windows code
-  winHandle += Ogre::StringConverter::toString((unsigned long)(this->parentWidget()->winId()));
-#elif MACOS
-  // Mac code, tested on Mac OSX 10.6 using Qt 4.7.4 and Ogre 1.7.3
-  Ogre::String winHandle  = Ogre::StringConverter::toString(winId());
-#else
-  // Unix code
-  QX11Info info = x11Info();
-  winHandle  = Ogre::StringConverter::toString((unsigned long)(info.display()));
-  winHandle += ":";
-  winHandle += Ogre::StringConverter::toString((unsigned int)(info.screen()));
-  winHandle += ":";
-  winHandle += Ogre::StringConverter::toString((unsigned long)(this->parentWidget()->winId()));
-#endif
- 
- 
-  Ogre::NameValuePairList params;
-#ifndef MACOS
-  // code for Windows and Linux
-  params["parentWindowHandle"] = winHandle;
-  mOgreWindow = mOgreRoot->createRenderWindow( "QOgreWidget_RenderWindow",
-                           this->width(),
-                           this->height(),
-                           false,
-                           &params );
- 
-  mOgreWindow->setActive(true);
-  WId ogreWinId = 0x0;
-  mOgreWindow->getCustomAttribute( "WINDOW", &ogreWinId );
- 
-  assert( ogreWinId );
- 
-  // bug fix, extract geometry
-  QRect geo = this->frameGeometry ( );
- 
-  // create new window
-  this->create( ogreWinId );
- 
-  // set geometrie infos to new window
-  this->setGeometry (geo);
- 
-#else
-  // code for Mac
-  params["externalWindowHandle"] = winHandle;
-  params["macAPI"] = "cocoa";
-  params["macAPICocoaUseNSView"] = "true";
-  mOgreWindow = mOgreRoot->createRenderWindow("QOgreWidget_RenderWindow",
-      width(), height(), false, &params);
-  mOgreWindow->setActive(true);
-  makeCurrent();
-#endif
- 
-  setAttribute( Qt::WA_PaintOnScreen, true );
-  setAttribute( Qt::WA_NoBackground );
- 
-  //== Ogre Initialization ==//
-  Ogre::SceneType scene_manager_type = Ogre::ST_EXTERIOR_CLOSE;
- 
-  mSceneMgr = mOgreRoot->createSceneManager( scene_manager_type );
-  mSceneMgr->setAmbientLight( Ogre::ColourValue(1,1,1) );
- 
-  mCamera = mSceneMgr->createCamera( "QOgreWidget_Cam" );
-  mCamera->setPosition( Ogre::Vector3(0,0,80) );
-  mCamera->lookAt( Ogre::Vector3(0,0,-300) );
-  mCamera->setNearClipDistance( 1.0 );
- 
-  Ogre::Viewport *mViewport = mOgreWindow->addViewport( mCamera );
-  mViewport->setBackgroundColour( Ogre::ColourValue( 0.1f,0.1f,1.0f ) );
+	void OgreWidget::init(std::string const& plugins_file, std::string const& ogre_cfg_file, std::string const& ogre_log)
+	{
+		// create the main ogre object
+		_mOgreRoot = new Ogre::Root(plugins_file, ogre_cfg_file, ogre_log);
+
+		// setup a renderer
+		Ogre::RenderSystemList::const_iterator renderers = _mOgreRoot->getAvailableRenderers().begin();
+		while(renderers != _mOgreRoot->getAvailableRenderers().end())
+		{
+			Ogre::String rName = (*renderers)->getName();
+			if (rName == "OpenGL Rendering Subsystem")
+				break;
+			renderers++;
+		}
+
+		Ogre::RenderSystem *renderSystem = *renderers;
+
+		_mOgreRoot->setRenderSystem(renderSystem);
+		QString dimensions = QString("%1x%2")
+											.arg(this->width())
+											.arg(this->height());
+
+		renderSystem->setConfigOption("Video Mode", dimensions.toStdString());
+
+		// initialize without creating window
+		_mOgreRoot->getRenderSystem()->setConfigOption("Full Screen", "No");
+		_mOgreRoot->saveConfig();
+		_mOgreRoot->initialise(false); // don't create a window
+	}
+
+	/**
+	* @brief setup the rendering context
+	* @author Kito Berg-Taylor
+	*/
+	void OgreWidget::initializeGL()
+	{
+		//== Creating and Acquiring Ogre Window ==//
+
+		// Get the parameters of the window QT created
+		Ogre::String winHandle;
+	#ifdef WIN32
+		// Windows code
+		winHandle += Ogre::StringConverter::toString((unsigned long)(this->parentWidget()->winId()));
+	#elif MACOS
+		// Mac code, tested on Mac OSX 10.6 using Qt 4.7.4 and Ogre 1.7.3
+		Ogre::String winHandle  = Ogre::StringConverter::toString(winId());
+	#else
+		// Unix code
+		QX11Info info = x11Info();
+		winHandle  = Ogre::StringConverter::toString((unsigned long)(info.display()));
+		winHandle += ":";
+		winHandle += Ogre::StringConverter::toString((unsigned int)(info.screen()));
+		winHandle += ":";
+		winHandle += Ogre::StringConverter::toString((unsigned long)(this->parentWidget()->winId()));
+	#endif
+
+		Ogre::NameValuePairList params;
+	#ifndef MACOS
+		// code for Windows and Linux
+		params["parentWindowHandle"] = winHandle;
+		_mOgreWindow = _mOgreRoot->createRenderWindow(	"QOgreWidget_RenderWindow",
+														this->width(),
+														this->height(),
+														false,
+														&params);
+
+		_mOgreWindow->setActive(true);
+		WId ogreWinId = 0x0;
+		_mOgreWindow->getCustomAttribute("WINDOW", &ogreWinId);
+
+		assert(ogreWinId);
+
+		// bug fix, extract geometry
+		QRect geo = this->frameGeometry();
+
+		// create new window
+		this->create(ogreWinId);
+
+		// set geometrie infos to new window
+		this->setGeometry(geo);
+
+	#else
+		// code for Mac
+		params["externalWindowHandle"] = winHandle;
+		params["macAPI"] = "cocoa";
+		params["macAPICocoaUseNSView"] = "true";
+		mOgreWindow = mOgreRoot->createRenderWindow("QOgreWidget_RenderWindow",
+													width(), height(), false, &params);
+		mOgreWindow->setActive(true);
+		makeCurrent();
+	#endif
+
+		setAttribute(Qt::WA_PaintOnScreen, true);
+		setAttribute(Qt::WA_NoBackground);
+
+		//== Ogre Initialization ==//
+		Ogre::SceneType scene_manager_type = Ogre::ST_EXTERIOR_CLOSE;
+
+		_mSceneMgr = _mOgreRoot->createSceneManager(scene_manager_type);
+		_mSceneMgr->setAmbientLight(Ogre::ColourValue(1.0f, 1.0f, 1.0f));
+
+		_mCamera = _mSceneMgr->createCamera("QOgreWidget_Cam");
+		_mCamera->setPosition(Ogre::Vector3(0, 0, 80));
+		_mCamera->lookAt(Ogre::Vector3(0, 0, -300));
+		_mCamera->setNearClipDistance(1.0f);
+
+		Ogre::Viewport *mViewport = _mOgreWindow->addViewport(_mCamera);
+		mViewport->setBackgroundColour(Ogre::ColourValue(0.1f, 0.1f, 1.0f));
 
 
 
 
+		/*
+		Ogre::ConfigFile cf;
+		cf.load("resources.cfg");
 
-    Ogre::ConfigFile cf;
-    cf.load("resources.cfg");
- 
-    // Go through all sections & settings in the file
-    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
- 
-    Ogre::String secName, typeName, archName;
-    while (seci.hasMoreElements())
-    {
-        secName = seci.peekNextKey();
-        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-        Ogre::ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
-            typeName = i->first;
-            archName = i->second;
-            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-                archName, typeName, secName);
-        }
-    }
+		// Go through all sections & settings in the file
+		Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
 
-    // load resources
-    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-//-------------------------------------------------------------------------------------
-    // Create the scene
-    Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "ogrehead.mesh");
- 
-    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    headNode->attachObject(ogreHead);
- 
-    // Set ambient light
-    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
- 
-    // Create a light
-    Ogre::Light* l = mSceneMgr->createLight("MainLight");
-    l->setPosition(20,80,50);
-}
- 
-/**
- * @brief render a frame
- * @author Kito Berg-Taylor
- */
-void OgreWidget::paintGL()
-{
-  // Be sure to call "OgreWidget->repaint();" to call paintGL
-  assert( mOgreWindow );
-  mOgreRoot->renderOneFrame();
-}
- 
-/**
- * @brief resize the GL window
- * @author Kito Berg-Taylor
- */
-void OgreWidget::resizeGL( int width, int height )
-{
-   assert( mOgreWindow );
-   mOgreWindow->reposition( this->pos().x(), 
-                            this->pos().y() );    
-   mOgreWindow->resize( width, height );
-   paintGL();
-}
- 
-/**
- * @brief choose the right renderer
- * @author Kito Berg-Taylor
- */
-Ogre::RenderSystem* OgreWidget::chooseRenderer( Ogre::RenderSystemList *renderers )
-{
-  // It would probably be wise to do something more friendly 
-  // that just use the first available renderer
-  return *renderers->begin();
-}
+		Ogre::String secName, typeName, archName;
+		while (seci.hasMoreElements())
+		{
+			secName = seci.peekNextKey();
+			Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
+			Ogre::ConfigFile::SettingsMultiMap::iterator i;
+			for (i = settings->begin(); i != settings->end(); ++i)
+			{
+				typeName = i->first;
+				archName = i->second;
+				Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+					archName, typeName, secName);
+			}
+		}
+
+		// load resources
+		Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+		//-------------------------------------------------------------------------------------
+		// Create the scene
+		Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "ogrehead.mesh");
+
+		Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+		headNode->attachObject(ogreHead);
+
+		// Set ambient light
+		mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+
+		// Create a light
+		Ogre::Light* l = mSceneMgr->createLight("MainLight");
+		l->setPosition(20,80,50);
+		*/
+	}
+
+	/**
+	* @brief render a frame
+	* @author Kito Berg-Taylor
+	*/
+	void OgreWidget::paintGL()
+	{
+		// Be sure to call "OgreWidget->repaint();" to call paintGL
+		assert(_mOgreWindow);
+		_mOgreRoot->renderOneFrame();
+	}
+
+	/**
+	* @brief resize the GL window
+	* @author Kito Berg-Taylor
+	*/
+	void OgreWidget::resizeGL(int width, int height)
+	{
+		assert(_mOgreWindow);
+		_mOgreWindow->reposition(this->pos().x(), this->pos().y());    
+		_mOgreWindow->resize(width, height);
+		paintGL();
+	}
+
+	void OgreWidget::updateGL()
+	{
+		QGLWidget::updateGL();
+		doneCurrent();
+	}
+
+	/**
+	* @brief choose the right renderer
+	* @author Kito Berg-Taylor
+	*/
+	Ogre::RenderSystem* OgreWidget::chooseRenderer(Ogre::RenderSystemList *renderers)
+	{
+		// It would probably be wise to do something more friendly 
+		// that just use the first available renderer
+		return *renderers->begin();
+	}
 }

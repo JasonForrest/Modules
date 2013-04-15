@@ -80,7 +80,7 @@ namespace Ui
 
 		OQSettings::SettingsManager::ProjectFileInfo *justCreatedProject = settingsManager->newProject(	_newProjectDialogForm->editPathToProjectFolder->text().toStdString(),
 																										_newProjectDialogForm->editProjectName->text().toStdString(),
-																										_newProjectDialogForm->comboboxProjectType->itemData(_newProjectDialogForm->comboboxSceernSize->currentIndex()).toString().toStdString());
+																										_newProjectDialogForm->comboboxProjectType->itemData(_newProjectDialogForm->comboboxProjectType->currentIndex()).toString().toStdString());
 		if (!justCreatedProject) return;
 
 		OQSettings::GameProjectSettings *projectSettings = (OQSettings::GameProjectSettings*)justCreatedProject->getProjectBaseSettings();
